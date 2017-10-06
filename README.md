@@ -22,10 +22,5 @@ apt-get install nfs-kernel-server (ubuntu)
 
 - Clone this repository into your project
 - Run ``vagrant up``
-- Add the following lines to your hosts file:
-````
-192.168.100.100 app.dev
-192.168.100.100 phpmyadmin.dev
-````
-- Navigate to ``http://app.dev/`` 
-- Navigate to ``http://phpmyadmin.dev/`` (both username and password are 'root')
+- Navigate to ``http://localhost:8080/`` 
+- Navigate to ``http://localhost:8080/pma/`` (both username and password are 'root')
