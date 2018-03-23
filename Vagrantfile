@@ -5,27 +5,24 @@ Vagrant.configure("2") do |config|
 	config.vm.box = "ubuntu/xenial64"
   	config.vm.host_name = "develop-php"
 
-  	# Mount shared folder using NFS
-    config.vm.synced_folder ".", "/vagrant",
-        id: "core",
-        :nfs => true,
-        :mount_options => ['nolock,vers=3,udp,noatime']
-
-
+  	# Mount shared folder
+    config.vm.synced_folder ".", "/vagrant"
 
   	config.vm.network "forwarded_port", guest: 80, host: 8080
 
 	# Do some network configuration
-    config.vm.network "private_network", ip: "192.168.100.100"
-
+	# private network disable. it has issue with windows 10 and virtualbox
+    #config.vm.network "private_network", ip: "192.168.100.2"
+		
   	#config.vm.network "public_network"
+	config.ssh.insert_key = true
 
   	config.vm.provider "virtualbox" do |vb|
     	# Display the VirtualBox GUI when booting the machine
     	vb.gui = false
 		
 		# Vagrant name
-		vb.name = "KDS-PHP-Dev01"
+		vb.name = "PHP-Dev01"
 
 		host = RbConfig::CONFIG['host_os']
 
@@ -45,6 +42,8 @@ Vagrant.configure("2") do |config|
 
         vb.customize ["modifyvm", :id, "--memory", mem]
         vb.customize ["modifyvm", :id, "--cpus", cpus]
+		
+		vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
   	end
 
 	config.vm.provision :shell, :path => "bootstrap.sh"
